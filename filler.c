@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 07:46:53 by rasingh           #+#    #+#             */
-/*   Updated: 2018/07/12 13:19:55 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/07/17 10:35:06 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,64 +73,16 @@ char	**ft_getpiece(char **arr)
 	return (NULL);
 }
 
-void	ft_place(char ** arr, char **piece, int x, int y)
+void	ft_place()  //////////////////
 {
-	int	i;
-	int	j;
-	int y1;
-	int x1;
-	int tmp;
-	char *xw;
-	char *yw;
-	char letter;
+	write(1, "8 2", 3);
 
-	letter = arr[x][y];
-	i = 0;
-	while (piece[i])
-	{
-		j = 0;
-		while (piece[i][j])
-		{
-			if (piece[i][j] == '*')
-				break;
-			j++;
-		}
-		if (piece[i][j] == '*')
-			break;
-		i++;
-	}
-	x1 = x - i;
-	i = 0;
-	tmp = j;
-	y1 = y - tmp;
-	xw = ft_itoa(x1);
-	yw = ft_itoa(y1);
-	ft_putstr(xw);
-	write(1, " ", 1);
-	ft_putstr(yw);
-	while (piece[i])
-	{
-		y1 = y - tmp;
-		j = 0;
-		while (piece[i][j])
-		{
-			if (piece[i][j] == '*')
-			{
-				arr[x1][y1] = letter + 32;
-			}
-			j++;
-			y1++;
-		}
-		i++;
-		x1++;
-	}
-	ft_putchar('\n');
-	ft_putarr(arr);
-}
+//	ft_putchar('\n');
+}												///////////////////////
 
-int	main(int ac, char **av)
+/*int	main(int ac, char **av)
 {
-	/*Read in Grid from stdin (needs to be edited)* && Determines Char*/
+// *Read in Grid from stdin (needs to be edited)* && Determines Char*
 
 	(void)ac;   //////////////////////////////////
 	int     i = 0 ;
@@ -152,15 +104,14 @@ int	main(int ac, char **av)
 			letter = 'O';                                                 //   For    //
 		if (ft_strcmp(line, "$$$ exec p2 : [players/rasingh.filler]") == 0)//    Char  //
 			letter = 'X';                                              //////////////
-		if (ret /*&& (line[0] == '0')*/)
+		if (ret)
 		{
 			arr[i] = line;
-			printf("%s\n", arr[i]);
 			i++;
 		}
 	//		ft_putarr(arr); //////////////////////////////
 	}
-	/*Get Piece && Locate Chars*/
+	// *Get Piece && Locate Chars*
 	char **piece;
 	if ((piece = ft_getpiece(arr)) != NULL)
 	{
@@ -180,8 +131,65 @@ int	main(int ac, char **av)
 				break;
 			i++;
 		}
-		ft_place(arr, piece, i, j);
-		////////////////////	
+		////////////////////
+		ft_place(arr, piece, i, j); /////////////////remove///////////
+	}
+	return (0);
+}*/
+
+int	main(/*int ac, char **av*/)
+{
+// *Read in Grid from stdin (needs to be edited)* && Determines Char*
+
+	//(void)ac;   //////////////////////////////////
+	int     i = 0 ;
+	char    *line =  NULL;
+	int     ret = 1;
+	//int     fd = open(av[1], O_RDONLY); //
+	char    *arr[120];
+	char    letter = '\0'; ///Determine Char
+	//	int     start; ///Determine Char
+	while (ret)
+	{
+		ret = get_next_line(0, &line);
+		if (ret == -1)
+		{
+			write(1, "Insert File", 11);
+			exit(4) ;
+		}
+		if (ft_strcmp(line, "$$$ exec p1 : [../rasingh.filler]") == 0)  //////////////
+			letter = 'O';                                                 //   For    //
+		if (ft_strcmp(line, "$$$ exec p2 : [../rasingh.filler]") == 0)//    Char  //
+			letter = 'X';                                              //////////////
+		if (ret)
+		{
+			arr[i] = line;
+			i++;
+		}
+	//		ft_putarr(arr); //////////////////////////////
+	}
+	// *Get Piece && Locate Chars*
+/*	char **piece;
+	if ((piece = ft_getpiece(arr)) != NULL)*/
+	{
+		/////////////////////	
+		//int j;
+		i = 0;
+		while (arr[i])
+		{
+			j = 0;
+			while (arr[i][j])
+			{
+				if (arr[i][j] == letter)
+					break;
+				j++;
+			}
+			if (arr[i][j] == letter)
+				break;
+			i++;
+		}
+		////////////////////
+		ft_place(); /////////////////remove///////////
 	}
 	return (0);
 }
