@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 07:46:53 by rasingh           #+#    #+#             */
-/*   Updated: 2018/07/24 14:20:13 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/07/24 14:47:01 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-char	**ft_getmap(char *line, char**map)
+char	**ft_getmap(char *line, char **map)
 {
 	int	ret;
 	int	i;
@@ -22,10 +22,10 @@ char	**ft_getmap(char *line, char**map)
 
 	j = 0;
 	ret = 1;
-	while(ret && line[0] >= '0' && line[0] <= '9')/*(!ft_strnequ(line,"Piece", 5 ))*/
+	while (ret && line[0] >= '0' && line[0] <= '9')
 	{
 		i = 0;
-		while (line[i] != '.' && line[i] != 'X' && line[i] != 'x' 
+		while (line[i] != '.' && line[i] != 'X' && line[i] != 'x'
 				&& line[i] != 'O' && line[i] != 'o')
 			i++;
 		map[j] = ft_strsub(line, i, ft_strlen(line) - i);
@@ -45,15 +45,15 @@ char	ft_find(char *line)
 	while (ret)
 	{
 		ret = get_next_line(0, &line);
-		if (ft_strcmp(line, "$$$ exec p1 : [../a.out]") == 0)  //////////////
+		if (ft_strcmp(line, "$$$ exec p1 : [../a.out]") == 0)
 		{
-			letter = 'O';                                                 //   For    //
-			break;
+			letter = 'O';
+			break ;
 		}
-		if (ft_strcmp(line, "$$$ exec p2 : [../a.out]") == 0)//    Char  //
-		{	
-			letter = 'X';                                              //////////////
-			break;
+		if (ft_strcmp(line, "$$$ exec p2 : [../a.out]") == 0)
+		{
+			letter = 'X';
+			break ;
 		}
 	}
 	return (letter);
@@ -66,7 +66,7 @@ char	**ft_getpiece(char *line, char **piece, int max)
 
 	j = 0;
 	ret = get_next_line(0, &line);
-	while(j < max)
+	while (j < max)
 	{
 		piece[j] = line;
 		j++;
@@ -95,7 +95,7 @@ t_map	ft_mapsize(char *line)
 t_map	ft_piecesize(char *line)
 {
 	t_map	piece;
-	char**	tmp;
+	char	**tmp;
 
 	if ((tmp = ft_strsplit(ft_strstr(line, "Piece"), ' ')))
 	{
@@ -107,7 +107,7 @@ t_map	ft_piecesize(char *line)
 	return (piece);
 }
 
-int	main()
+int		main(void)
 {
 	char		*line;
 	int			ret;
@@ -122,15 +122,13 @@ int	main()
 	while (ret)
 	{
 		if (ft_strnequ(line, "Plateau", 7))
-			map  = ft_mapsize(line);	//also used to get map  *WORKING*
+			map = ft_mapsize(line);
 		if (ft_strnequ(line, "Piece", 5))
 		{
-			piece = ft_piecesize(line); //also used to get piece
+			piece = ft_piecesize(line);
 		}
 		ret = get_next_line(0, &line);
-		//ft_place(map, piece);
+		//ft_place(map, piece); *ONLY THING LEFT*
 	}
 	return (0);
 }
-
-
