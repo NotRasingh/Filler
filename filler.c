@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 07:46:53 by rasingh           #+#    #+#             */
-/*   Updated: 2018/07/31 14:21:50 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/08 16:20:39 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,99 +16,98 @@
 ///////////////////////////////////////////////////////////////////////////
 //PLACING PIECE
 
-///SEGFAULT SOMEWHERE HERE
+//SEGFAULT WHEN REACHING END OF MAP
+/*t_arrcount	ft_locatenextx(t_map map, t_arrcount x)
+  {
+  int	j;
+  t_arrcount y;
 
-t_arrcount	ft_locatenextx(t_map map, t_arrcount x)
+  j = x.x;
+  y.y = 0;
+  y.x = 0;
+  while (x.y < map.y)
+  {
+  x.x = j;
+  while (x.x < map.x)
+  {
+  if (map.arr[x.y][x.x] == 'X' || map.arr[x.y][x.x] == 'x')
+  {
+  y.x = x.x;
+  y.y = x.y;
+  break;
+  }
+  x.x++;
+  }
+  if (y.x || y.y)
+  break;
+  x.y++;
+  }
+  return (y);
+  }
+
+  t_arrcount	ft_nextstar(t_arrcount st, t_map piece)
+  {
+  int	j;
+
+  st.y--;
+  st.x--;
+  j = st.x;
+  while (st.y >= 0)
+  {
+  st.x = j;
+  while (st.x >= 0)
+  {
+  if (piece.arr[st.y][st.x] == '*')
+  return (st);
+  st.x--;
+  }
+  st.y--;
+  }
+  return (st);
+  }
+
+  void	ft_spacex(t_map map, t_map piece) //only counts backward from last star in piece (still need to count foraward to end of piece)
+  {
+  t_arrcount	st;
+  t_arrcount	x;
+  t_arrcount	tmp;
+  t_arrcount	tmpx;
+  int			cnt;
+
+  cnt = 0;
+  st = ft_laststar(piece);
+  tmp = st;
+//	dprintf(2, "\n\n\n<ST %d><%d>\n\n\n", st.y, st.x);
+x = ft_firstx(map);
+tmpx = x;
+while (tmp.y >= 0)
 {
-	int	j;
-	t_arrcount y;
-
-	j = x.x;
-	y.y = 0;
-	y.x = 0;
-	while (x.y < map.y)
-	{
-		x.x = j;
-		while (x.x < map.x)
-		{
-			if (map.arr[x.y][x.x] == 'X' || map.arr[x.y][x.x] == 'x')
-			{
-				y.x = x.x;
-				y.y = x.y;
-				break;
-			}
-			x.x++;
-		}
-		if (y.x || y.y)
-			break;
-		x.y++;
-	}
-	return (y);
-}
-
-t_arrcount	ft_nextstar(t_arrcount st, t_map piece)
+tmp.x = st.x;
+tmpx.x = x.x;
+while (tmp.x >= 0)
 {
-	int	j;
-
-	st.y--;
-	st.x--;
-	j = st.x;
-	while (st.y >= 0)
-	{
-		st.x = j;
-		while (st.x >= 0)
-		{
-			if (piece.arr[st.y][st.x] == '*')
-				return (st);
-			st.x--;
-		}
-		st.y--;
-	}
-	return (st);
-}
-
-
-
-void	ft_spacex(t_map map, t_map piece) //only counts backward from last star in piece (still need to count foraward to end of piece)
+tmpx.x--;
+tmp.x--;
+if (map.arr[tmpx.y][tmpx.x] != '.' && piece.arr[tmp.y][tmp.x] == '*' && cnt > 0 && tmp.x)
 {
-	t_arrcount	st;
-	t_arrcount	x;
-	t_arrcount	tmp;
-	t_arrcount	tmpx;
-	int			cnt;
-
-	cnt = 0;
-	st = ft_laststar(piece);
+	st = ft_nextstar(st, piece);
 	tmp = st;
-	//	dprintf(2, "\n\n\n<ST %d><%d>\n\n\n", st.y, st.x);
+	//				dprintf(2, "\n\n\n<NEXTy %d>    <NEXTx %d>\n\n\n", tmp.y, tmp.x);
+	//				x = ft_checkx(map, piece, x); //check if you should go to next x or nah
 	x = ft_firstx(map);
 	tmpx = x;
-	while (tmp.y >= 0)
-	{
-		tmp.x = st.x;
-		tmpx.x = x.x;
-		while (tmp.x >= 0)
-		{
-			tmpx.x--;
-			tmp.x--;
-			if (map.arr[tmpx.y][tmpx.x] != '.' && piece.arr[tmp.y][tmp.x] == '*' && cnt > 0 && tmp.x)
-			{
-				st = ft_nextstar(st, piece);
-				tmp = st;
-				dprintf(2, "\n\n\n<NEXTy %d>    <NEXTx %d>\n\n\n", tmp.y, tmp.x);
-				x = ft_firstx(map);
-				tmpx = x;
-			}
-			dprintf(2, "\n\n\n<mapy   %d>    <mapy   %d>\n\n\n", x.y, x.x);
-			dprintf(2, "\n\n\n<piecey %d>    <piecex %d>\n\n\n", tmp.y, tmp.x);
-			//			tmpx.x--;
-			//			tmp.x--;
-		}
-		tmpx.y--;
-		tmp.y--;
-		cnt++;
-	}
-	ft_placex(st, x);
+}
+//			dprintf(2, "\n\n\n<mapy   %d>    <mapy   %d>\n\n\n", x.y, x.x);
+//			dprintf(2, "\n\n\n<piecey %d>    <piecex %d>\n\n\n", tmp.y, tmp.x);
+//			tmpx.x--;
+//			tmp.x--;
+}
+tmpx.y--;
+tmp.y--;
+cnt++;
+}
+dprintf(2, "\n\n\n<mapy   %d>    <mapy   %d>\n\n\n", x.y, x.x);
+ft_placex(st, x);
 }
 
 void	ft_placex(t_arrcount pi, t_arrcount x)
@@ -126,11 +125,11 @@ void	ft_placex(t_arrcount pi, t_arrcount x)
 	}
 	//	 dprintf(2, "\n\n\n<%d><%d>\n\n\n", x.y, x.x);
 	dprintf(1, "%d %d\n", x.y, x.x);
-	/*	ft_putnbr(x.y);
-		ft_putchar(' ');
-		ft_putnbr(x.x);
-		ft_putchar('\n');*/
-}
+	ft_putnbr(x.y);
+	ft_putchar(' ');
+	ft_putnbr(x.x);
+	ft_putchar('\n');
+}*/
 ///////////////////////////////////////////////////////////////////////////
 //LOCATING CHARS
 char	ft_find(char *line)
@@ -315,18 +314,141 @@ t_map	ft_piecesize(char *line)
 {
 	t_map	piece;
 	char	**tmp;
-	//	 dprintf(2, "\n\n\n<<3>>\n\n\n");
 	if ((tmp = ft_strsplit(ft_strstr(line, "Piece"), ' ')))
 	{
 		piece.y = ft_atoi(tmp[1]);
 		piece.x = ft_atoi(tmp[2]);
 	}
-	//	 dprintf(2, "\n\n\n<<4>>\n\n\n");
 	piece.arr = (char**)malloc(sizeof(piece) * piece.y);
-	//	 dprintf(2, "\n\n\n<<5>>\n\n\n");
 	piece.arr = ft_getpiece(line, piece.arr, piece.y);
-	//	 dprintf(2, "\n\n\n<<9>>\n\n\n");
 	return (piece);
+}
+/////////////////////////////////////////////////////////////////////////////////////
+char	**ft_replace(char **arr, char letter)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (arr[i])
+	{
+		j = 0;
+		while (arr[i][j])
+		{
+			if (arr[i][j] == letter)
+			{
+				arr[i][j] = 'k';
+			}
+			j++;
+		}
+		i++;
+	}
+	return (arr);
+}
+
+int	*ft_best(t_map map, t_arrcount *place, int count)
+{
+	int	i;
+	int	*dist;
+	t_arrcount ma;
+
+	dist = (int*)malloc(count * sizeof(int));
+	ma.y = -1;
+	i = -1;
+	while (i++ < count)
+	{
+		while (ma.y++ < map.y)
+		{
+			ma.x = -1;
+			while (ma.x++ < map.x)
+			{
+				if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.')
+					dist[i] = (ma.y - place[i].y) + (ma.x - place[i].x);
+				ma.x++;
+			}
+		}
+	}
+	return (dist);
+}
+
+int	ft_move(t_map map, t_arrcount ma, t_map piece)
+{
+	t_arrcount	pi;
+	int	i;
+
+	i = 0;
+	pi.y = 0;
+	while (pi.y <  piece.y)
+	{
+		ma.x = 0;
+		while (pi.x < piece.x)
+		{
+			if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.'  && piece.arr[pi.y][pi.x] == '*')
+				return (0);
+			else if (map.arr[ma.y][ma.x] == 'k' && piece.arr[pi.y][pi.x] == '*')
+				i++;
+			pi.x++;
+			ma.x++;
+		}
+		pi.y++;
+		ma.y++;
+	}
+	return (i);
+}
+
+void	ft_sort(int *tab, unsigned int size, t_arrcount *place)
+{
+	unsigned int    i;
+	int 			tmp;
+	t_arrcount		tmp2;
+	
+	i = 0;
+	while (i < size - 1)
+	{
+		if (tab[i] <= tab[i + 1])
+			i++;
+		else
+		{
+			tmp = tab[i];
+			tab[i] = tab[i + 1];
+			tab[i + 1] = tmp;
+			tmp2 = place[i];
+            place[i] = place[i + 1];
+            place[i + 1] = tmp2;
+			i = 0;
+		}
+	}
+	dprintf(2, "\n\n\n<%d> <%d>\n\n\n", place[0].y, place[0].x);
+    dprintf(1, "%d %d", place[0].y, place[0].x);
+}
+
+void	ft_place(t_map map, t_map piece)
+{
+	t_arrcount	*possible;
+	t_arrcount	ma;
+	int	count;
+	int	*dist;
+
+	count = -1;
+	ma.y = 0;
+	possible = (t_arrcount*)malloc(sizeof(t_arrcount));
+	while (ma.y < map.y)
+	{
+		ma.x = 0;
+		while (ma.x < map.x)
+		{
+			if (ft_move(map, ma, piece) == 1)
+			{
+				count++;
+				possible[count].y = ma.y;
+				possible[count].x = ma.x;
+			}
+			ma.x++;
+		}
+		ma.y++;
+	}
+	dist = ft_best(map, possible, count);
+	ft_sort(dist, count, possible);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 int		main(void)
@@ -345,17 +467,12 @@ int		main(void)
 	{
 		if (ft_strnequ(line, "Plateau", 7))	
 			map = ft_mapsize(line);
-		//		 dprintf(2, "\n\n\n<<1>>\n\n\n");
 		if (ft_strnequ(line, "Piece", 5))
 		{
-			//			 dprintf(2, "\n\n\n<<2>>\n\n\n");
 			piece = ft_piecesize(line);
-			//dprintf(2, "\n\n\n<<10>>\n\n\n");
-			if (letter == 'X')
-				ft_spacex(map, piece);
-			//	else
-			//		ft_placeo(map, piece); 
 		}
+		map.arr = ft_replace(map.arr, letter);
+		ft_place(piece, map);
 		ret = get_next_line(0, &line);
 	}
 	return (0);

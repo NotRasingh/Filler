@@ -1,5 +1,6 @@
-seed = 6650
+seed = 3283
+../a.out: Segfault at 0
 O: error on input
 players/hcao.filler won
 Score:
-40AGAINST9
+45AGAINST0
