@@ -6,11 +6,11 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 16:06:38 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/08 16:13:47 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/09 09:37:57 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	sort_int_tab(int *tab, unsigned int size)
+void	ft_sort_int_tab(int *tab, unsigned int size)
 {
 	unsigned int	i;
 	int	tmp;

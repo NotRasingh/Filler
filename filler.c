@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 07:46:53 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/08 16:20:39 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/09 11:09:51 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ char	**ft_replace(char **arr, char letter)
 		j = 0;
 		while (arr[i][j])
 		{
-			if (arr[i][j] == letter)
+			if (arr[i][j] == letter || arr[i][j] == letter - 32)
 			{
 				arr[i][j] = 'k';
 			}
@@ -346,42 +346,47 @@ char	**ft_replace(char **arr, char letter)
 	return (arr);
 }
 
-int	*ft_best(t_map map, t_arrcount *place, int count)
+int	ft_dist(t_map map, t_arrcount place)
 {
 	int	i;
 	int	*dist;
 	t_arrcount ma;
 
-	dist = (int*)malloc(count * sizeof(int));
+	dist = (int*)malloc(100 * sizeof(int));
 	ma.y = -1;
 	i = -1;
-	while (i++ < count)
+	while (ma.y++ < map.y - 1)
 	{
-		while (ma.y++ < map.y)
+		ma.x = -1;
+		while (ma.x++ < map.x - 1)
 		{
-			ma.x = -1;
-			while (ma.x++ < map.x)
+			if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.' && ft_isalpha(map.arr[ma.y][ma.x]))
 			{
-				if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.')
-					dist[i] = (ma.y - place[i].y) + (ma.x - place[i].x);
-				ma.x++;
+				dist[i++] = abs((ma.y - place.y) + (ma.x - place.x));
 			}
 		}
 	}
-	return (dist);
+	ft_sort_int_tab(dist, i);
+	return (dist[0]);
 }
 
 int	ft_move(t_map map, t_arrcount ma, t_map piece)
 {
 	t_arrcount	pi;
+	int	tmp;
 	int	i;
 
+	tmp = ma.x;
 	i = 0;
 	pi.y = 0;
-	while (pi.y <  piece.y)
+	dprintf(2, "\n\n\n<<< MAP: >>>\n\n\n");
+	ft_putarr(map.arr);
+	dprintf(2, "\n\n\nEND\n\n\n");
+	while (pi.y <  piece.y && ma.y < map.y)
 	{
-		ma.x = 0;
-		while (pi.x < piece.x)
+		pi.x = 0;
+		ma.x = tmp;
+		while (pi.x < piece.x && ma.x < map.x)
 		{
 			if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.'  && piece.arr[pi.y][pi.x] == '*')
 				return (0);
@@ -401,7 +406,7 @@ void	ft_sort(int *tab, unsigned int size, t_arrcount *place)
 	unsigned int    i;
 	int 			tmp;
 	t_arrcount		tmp2;
-	
+
 	i = 0;
 	while (i < size - 1)
 	{
@@ -413,13 +418,13 @@ void	ft_sort(int *tab, unsigned int size, t_arrcount *place)
 			tab[i] = tab[i + 1];
 			tab[i + 1] = tmp;
 			tmp2 = place[i];
-            place[i] = place[i + 1];
-            place[i + 1] = tmp2;
+			place[i] = place[i + 1];
+			place[i + 1] = tmp2;
 			i = 0;
 		}
 	}
-	dprintf(2, "\n\n\n<%d> <%d>\n\n\n", place[0].y, place[0].x);
-    dprintf(1, "%d %d", place[0].y, place[0].x);
+	dprintf(2, "\n\n\nFIINAL: <%d> <%d>\n\n\n", place[0].y, place[0].x);
+	dprintf(1, "%d %d\n", place[0].y, place[0].x);
 }
 
 void	ft_place(t_map map, t_map piece)
@@ -432,6 +437,7 @@ void	ft_place(t_map map, t_map piece)
 	count = -1;
 	ma.y = 0;
 	possible = (t_arrcount*)malloc(sizeof(t_arrcount));
+	dist = (int*)malloc(100 * sizeof(int));
 	while (ma.y < map.y)
 	{
 		ma.x = 0;
@@ -442,12 +448,12 @@ void	ft_place(t_map map, t_map piece)
 				count++;
 				possible[count].y = ma.y;
 				possible[count].x = ma.x;
+				dist[count] = ft_dist(map, possible[count]);
 			}
 			ma.x++;
 		}
 		ma.y++;
 	}
-	dist = ft_best(map, possible, count);
 	ft_sort(dist, count, possible);
 }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -470,9 +476,13 @@ int		main(void)
 		if (ft_strnequ(line, "Piece", 5))
 		{
 			piece = ft_piecesize(line);
+			dprintf(2, "\n\n\n<<<1>>>------------------------------------\n\n\n");
+			map.arr = ft_replace(map.arr, letter);
+			dprintf(2, "\n\n\n<<<2>>>------------------------------------\n\n\n");
+			ft_place(map, piece);
+			dprintf(2, "\n\n\n<<<3>>>------------------------------------\n\n\n");
+			dprintf(2, "\n\n\n<<<FT_PLACE>>>\n\n\n");
 		}
-		map.arr = ft_replace(map.arr, letter);
-		ft_place(piece, map);
 		ret = get_next_line(0, &line);
 	}
 	return (0);

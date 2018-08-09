@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 10:11:58 by rasingh           #+#    #+#             */
-/*   Updated: 2018/07/17 11:20:11 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/09 09:37:36 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+void    ft_sort_int_tab(int *tab, unsigned int size);
 void	ft_bzero(void *s, size_t n);
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
