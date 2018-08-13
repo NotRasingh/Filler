@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:57:14 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/09 09:36:51 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/13 14:28:26 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,8 @@ typedef struct	s_arrcount
 	int	y;
 }				t_arrcount;
 
-char		**ft_getmap(char *line, char **map, int max);
-char		ft_find(char *line);
-char		**ft_getpiece(char *line, char **piece, int max);
-t_map		ft_mapsize(char *line);
-t_map		ft_piecesize(char *line);
-t_arrcount	ft_firststar(t_map piece);
-t_arrcount	ft_laststar(t_map piece);
-t_arrcount	ft_firstx(t_map map);
-t_arrcount	ft_lasto(t_map map);
-void		ft_placex(t_arrcount pi, t_arrcount x);
-void		ft_spacex(t_map map, t_map piece);
+char		**ft_getmap(char **line, char **map, int max);
+char		ft_find(char **line);
+char		**ft_getpiece(char **line, char **piece, int max);
+t_map		ft_mapsize(char **line);
 #endif
