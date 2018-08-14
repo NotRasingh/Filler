@@ -6,7 +6,8 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:57:14 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/13 14:28:26 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/14 14:05:03 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/09 14:00:19 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +30,4 @@ typedef struct	s_arrcount
 	int	y;
 }				t_arrcount;
 
-char		**ft_getmap(char **line, char **map, int max);
-char		ft_find(char **line);
-char		**ft_getpiece(char **line, char **piece, int max);
-t_map		ft_mapsize(char **line);
 #endif

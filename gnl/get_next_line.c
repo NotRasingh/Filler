@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/28 08:56:40 by rasingh           #+#    #+#             */
-/*   Updated: 2018/07/09 09:14:44 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/14 13:48:28 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ char	*ft_read(char *left, char **line)
 		tmp = ft_strchr(left, '\n');
 		tmp++;
 		tmp = ft_strdup(tmp);
-		free(tmp2);
+//		free(tmp2);
 	}
 	else
 	{
 		tmp = ft_strdup("");
 		tmp2 = left;
-		free(tmp2);
+//		free(tmp2);
 	}
 	return (tmp);
 }
@@ -58,7 +58,7 @@ int		get_next_line(const int fd, char **line)
 		buf[ret] = '\0';
 		tmp = red;
 		red = ft_strjoin(red, buf);
-		free(tmp);
+//		free(tmp);
 	}
 	if (ret == 0 && red[0] == '\0')
 		return (0);

@@ -1,7 +1,5 @@
-seed = 5742
+seed = 8849
 X: error on input
-../a.out: Segfault at 0
-O: error on input
 players/hcao.filler won
 Score:
-5AGAINST0
+1AGAINST0

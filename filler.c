@@ -6,63 +6,53 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 07:46:53 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/13 14:59:44 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/14 14:26:12 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/09 14:14:40 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <fcntl.h>
 #include <stdio.h>
-///////////////////////////////////////////////////////////////////////////                     1
+///////////////////////////////////////////////////////////////////////////
 //LOCATING CHARS
-char	ft_find(char **line)
+char	ft_find(void)
 {
-	int		ret;
 	char	letter;
+	char	*line;
 
-	ret = 1;
 	letter = '\0';
-	while (ret)
-	{
-		ret = get_next_line(0, line);
-		if (ft_strcmp(*line, "$$$ exec p1 : [../a.out]") == 0)
-		{
+		get_next_line(0, &line);
+		dprintf(2, "lol<<<<<<%s\n", line);
+		if (ft_strcmp(line, "$$$ exec p1 : [../a.out]") == 0)
 			letter = 'O';
-			break ;
-		}
-		if (ft_strcmp(*line, "$$$ exec p2 : [../a.out]") == 0)
-		{
+		if (ft_strcmp(line, "$$$ exec p2 : [../a.out]") == 0)
 			letter = 'X';
-			break ;
-		}
-	}
 	return (letter);
 }
-
-//////////////////////////////////////////////////////////////////////////////////              4
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 //GETTING PIECE & MAP//
-char	**ft_getmap(char **line, char **map, int max)
+char	**ft_getmap(char **line, char **map)
 {
 	int	ret;
-	//	int	i;
+	int	i;
 	int	j;
 
 	j = 0;
 	ret = 1;
 	ret = get_next_line(0, line);
-	while (ret && j < max)
+	   dprintf(2, "\n\n\n------------------------------------------------------MAPLINE: <<<%s>>>\n", *line);
+	while (1)
 	{
+		i = 0;
 		ret = get_next_line(0, line);
-		dprintf(2, "!TEST\n\n\n");
-		while (**line != '.' && **line != 'X' && **line != 'x'
-				&& **line != 'O' && **line != 'o')
-			**line++;
-		map[j] = *line;
-		dprintf(2, "MAP: %s\n\n", map[j]);
+		  if (line[0][0] == 'P')
+            break;
+		while (line[0][i] != '.' && line[0][i] != 'X' && line[0][i] != 'x' && line[0][i] != 'O' && line[0][i] != 'o')
+			i++;
+		map[j] = (char*)&line[0][i];
 		j++;
-		dprintf(2, "%d\n\n\n", j);
 	}
-	dprintf(2, "TEST\n\n\n");
 	return (map);
 }
 
@@ -72,10 +62,12 @@ char	**ft_getpiece(char **line, char **piece, int max)
 	int	j;
 
 	j = 0;
-	while (j < max && ret)
+	ret = 1;
+	while (j < max)
 	{
 		ret = get_next_line(0, line);
 		piece[j] = *line;
+		dprintf(2, "PIECE: <<%s>>\n", *line);
 		j++;
 	}
 	return (piece);
@@ -84,62 +76,64 @@ char	**ft_getpiece(char **line, char **piece, int max)
 t_map	ft_mapsize(char **line)
 {
 	char	**tmp;
-	t_map	map;
+	static	t_map	map;
 
-	dprintf(2, "\n-----------------------------------------\n");
-	dprintf(2, "TESTLINE : <<<%s>>>\n\n\n", *line);
-	dprintf(2, "\n-----------------------------------------\n");
-	if ((tmp = ft_strsplit(ft_strstr(*line, "Plateau"), ' ')))
+	if (!map.arr)
 	{
-		map.y = ft_atoi(tmp[1]);
-		map.x = ft_atoi(tmp[2]);
+		if ((tmp = ft_strsplit(*line, ' ')))
+		{
+			map.y = ft_atoi(tmp[1]);
+			map.x = ft_atoi(tmp[2]);
+		}
+		map.arr = (char**)malloc(sizeof(map) * map.y + 1);
 	}
-	dprintf(2, "\n-----------------------------------------\n");
-	map.arr = (char**)malloc(sizeof(map) * map.y + 1);
-	dprintf(2, "\nMALLOC-----------------------------------------\n");
-	map.arr = ft_getmap(line, map.arr, map.y);
-	dprintf(2, "\nMAP-----------------------------------------\n");
+	dprintf(2, "SHOULD WORK\n\n");
+	map.arr = ft_getmap(line, map.arr);
 	return (map);
 }
 
 t_map	ft_piecesize(char **line)
 {
-	t_map	piece;
+	static	t_map	piece;
 	char	**tmp;
-	dprintf(2, "\n-----------------------------------------\n");
-	dprintf(2, "TESTLINE : <<<%s>>>\n\n\n", *line);
-	if ((tmp = ft_strsplit(ft_strstr(*line, "Piece"), ' ')))
+
+	dprintf(2, "WORK: <<<%s>>>\n", *line);
+	if (!piece.arr)
 	{
-		piece.y = ft_atoi(tmp[1]);
-		piece.x = ft_atoi(tmp[2]);
+		if ((tmp = ft_strsplit(*line, ' ')))
+		{
+			piece.y = ft_atoi(tmp[1]);
+			piece.x = ft_atoi(tmp[2]);
+		}
+		//  free(&tmp);
+		piece.arr = (char**)malloc(sizeof(piece) * piece.y);
 	}
-	dprintf(2, "\n-----------------------------------------\n");
-	piece.arr = (char**)malloc(sizeof(piece) * piece.y);
-	dprintf(2, "\nMALLOC-----------------------------------------\n");
+	 dprintf(2, "OR NAH: <<<%s>>>\n", *line);
 	piece.arr = ft_getpiece(line, piece.arr, piece.y);
+	dprintf(2, "SHOULDWORK: <<<%s>>>\n", *line);
 	return (piece);
 }
 /////////////////////////////////////////////////////////////////////////////////////                    5
-char	**ft_replace(char **arr, char letter)
+t_map	ft_replace(t_map map, char letter)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (arr[i])
+	while (i < map.y)
 	{
 		j = 0;
-		while (arr[i][j])
+		while (j < map.x)
 		{
-			if (arr[i][j] == letter || arr[i][j] == letter - 32)
+			if (map.arr[i][j] == letter || map.arr[i][j] == letter - 32)
 			{
-				arr[i][j] = 'k';
+				map.arr[i][j] = 'k';
 			}
 			j++;
 		}
 		i++;
 	}
-	return (arr);
+	return (map);
 }
 
 int	ft_dist(t_map map, t_arrcount place)
@@ -148,7 +142,7 @@ int	ft_dist(t_map map, t_arrcount place)
 	int	*dist;
 	t_arrcount ma;
 
-	dist = (int*)malloc(100 * sizeof(int));
+	dist = (int*)malloc(100 * sizeof(int*));
 	ma.y = -1;
 	i = -1;
 	while (ma.y++ < map.y - 1)
@@ -158,7 +152,7 @@ int	ft_dist(t_map map, t_arrcount place)
 		{
 			if (map.arr[ma.y][ma.x] != 'k' && map.arr[ma.y][ma.x] != '.' && ft_isalpha(map.arr[ma.y][ma.x]))
 			{
-				dist[i++] = abs((ma.y - place.y) + (ma.x - place.x));
+				dist[i++] = abs(ma.y - place.y) + abs(ma.x - place.x);
 			}
 		}
 	}
@@ -216,8 +210,9 @@ void	ft_sort(int *tab, unsigned int size, t_arrcount *place)
 			i = 0;
 		}
 	}
-	dprintf(2, "\n\n\nFIINAL: <%d> <%d>\n\n\n", place[0].y, place[0].x);
+	//	dprintf(2, "\n\n\nFINAL: <%d> <%d>\n\n\n", place[0].y, place[0].x);
 	dprintf(1, "%d %d\n", place[0].y, place[0].x);
+	dprintf(2, "\n\n<<<<<<<<<<<%d %d\n>>>>>>>>>>>>>>\n\n", place[0].y, place[0].x);
 }
 
 void	ft_place(t_map map, t_map piece)
@@ -227,9 +222,6 @@ void	ft_place(t_map map, t_map piece)
 	int	count;
 	int	*dist;
 
-	dprintf(2, "\n\n\nSTART\n\n\n");
-	ft_putarr(map.arr);
-	dprintf(2, "\n\n\nEND\n\n\n");
 	count = -1;
 	ma.y = 0;
 	possible = (t_arrcount*)malloc(sizeof(t_arrcount));
@@ -241,6 +233,7 @@ void	ft_place(t_map map, t_map piece)
 		{
 			if (ft_move(map, ma, piece) == 1)
 			{
+				//				dprintf(2, "\n\n\n<<<MAP: %d %d>>>\n\n\n",ma.y, ma.x);
 				count++;
 				possible[count].y = ma.y;
 				possible[count].x = ma.x;
@@ -256,23 +249,25 @@ void	ft_place(t_map map, t_map piece)
 int		main(void)
 {
 	char		*line;
-	int			ret;
 	t_map		map;
 	t_map		piece;
 	static char	letter;
 
 	line = NULL;
-	ret = 1;
 	if (!letter)
-		letter = ft_find(&line);
-	ret = get_next_line(0, &line);
-	dprintf(2, "\n\n\nLINE: <<<%s>>>\n\n\n", line);
-	map = ft_mapsize(&line);
-	dprintf(2, "AFTERMAPLINE: <<<%s>>>\n", line);
-	dprintf(2, "3\n");
-	piece = ft_piecesize(&line);
-	map.arr = ft_replace(map.arr, letter);
-	ft_place(map, piece);
-	dprintf(2, "\n\n\n------------END-----------\n\n\n");
+		letter = ft_find();
+//	get_next_line(0, &line);
+	while (1)
+	{
+	dprintf(2, "hi>>>>>>>>>>>>>>>>>>>>>>>>>>>>%s", line);
+		dprintf(2, "\n\n\nMAINLINE: <<<%s>>>\n", line);
+		map = ft_mapsize(&line);
+		dprintf(2, "AFTERMAPLINE: <<<%s>>>\n", line);
+		piece = ft_piecesize(&line);
+		dprintf(2, "AFTERPIECELINE: <<<%s>>>\n", line);
+		map = ft_replace(map, letter);
+		ft_place(map, piece);
+		dprintf(2, "\n\n\nFINAL LINE: <<<%s>>>\n\n\n", line);
+	}
 	return (0);
 }
