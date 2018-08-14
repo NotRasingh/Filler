@@ -6,14 +6,14 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 14:26:24 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/14 16:10:23 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/14 16:21:34 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h>
 
-char	ft_getplayer()
+char	ft_getplayer(void)
 {
 	static char		letter;
 	char			*line;
@@ -44,12 +44,12 @@ t_map	ft_init(t_map map, char **line)
 	return (map);
 }
 
-char	**ft_replace(char** map)
+char	**ft_replace(char **map)
 {
 	int		i;
 	int		j;
 	char	letter;
-	
+
 	i = 0;
 	j = 0;
 	letter = ft_getplayer();
@@ -59,7 +59,7 @@ char	**ft_replace(char** map)
 		while (map[i][j])
 		{
 			if (map[i][j] == letter || map[i][j] == letter - 32)
-			   map[i][j] = 'k';
+				map[i][j] = 'k';
 			j++;
 		}
 		i++;
@@ -69,7 +69,6 @@ char	**ft_replace(char** map)
 
 void	ft_moves(t_map map, t_map piece)
 {
-
 	map.x = 0;
 	piece.y = 0;
 	return ;
@@ -108,7 +107,7 @@ void	ft_getmap(char **line)
 	{
 		get_next_line(0, line);
 		if (line[0][0] == 'P')
-			break;
+			break ;
 		map.arr[j] = ft_strsub(*line, 4, map.x);
 		dprintf(2, "MAP <<%s>>\n", map.arr[j]);
 		j++;
@@ -118,7 +117,8 @@ void	ft_getmap(char **line)
 	ft_getpiece(line, map);
 	dprintf(2, "AFTERPIECELINE: <<%s>>\n", *line);
 }
-int	ft_play(void)
+
+int		ft_play(void)
 {
 	char *line;
 
@@ -131,7 +131,7 @@ int	ft_play(void)
 	return (0);
 }
 
-int	main(void)
+int		main(void)
 {
 	int		i;
 	char	letter;
