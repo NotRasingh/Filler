@@ -1,20 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/22 14:19:54 by rasingh           #+#    #+#             */
-/*   Updated: 2018/05/30 10:40:55 by rasingh          ###   ########.fr       */
+/*   Created: 2018/08/17 10:31:03 by rasingh           #+#    #+#             */
+/*   Updated: 2018/08/17 11:21:43 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/filler.h"
 
-int	ft_isdigit(int c)
+int		ft_play(void)
 {
-	if (c >= '0' && c <= '9')
+	char	*line;
+
+	if (get_next_line(0, &line))
+	{
+		ft_getmap(&line);
 		return (1);
+	}
+	return (0);
+}
+
+int		main(void)
+{
+	int		i;
+	char	letter;
+
+	i = 1;
+	letter = ft_getplayer();
+	while (i)
+		i = ft_play();
 	return (0);
 }
