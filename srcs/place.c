@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 10:23:21 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/17 11:12:27 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/22 12:17:52 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ t_moves	*ft_best(t_moves *moves)
 
 	tmp = moves;
 	best = tmp;
-	rating = 2147483647;
+	rating = tmp->rating;
 	while (tmp)
 	{
 		if (tmp->rating < rating)
 		{
 			best = tmp;
-			tmp->rating = rating;
+			rating = tmp->rating;
 		}
 		tmp = tmp->next;
 	}

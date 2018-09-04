@@ -6,7 +6,7 @@
 #    By: rasingh <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/30 08:38:55 by rasingh           #+#    #+#              #
-#    Updated: 2018/06/22 13:18:06 by rasingh          ###   ########.fr        #
+#    Updated: 2018/08/21 11:30:32 by rasingh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,14 +73,14 @@ SRCO = $(addsuffix .o, $(FUNCS))
 all: $(NAME)
 
 $(NAME):
-	$(CC) $(CFLAGS) $(SRCC)
-	ar rc $(NAME) $(SRCO)
-	ranlib $(NAME)
+	@$(CC) $(CFLAGS) $(SRCC)
+	@ar rc $(NAME) $(SRCO)
+	@ranlib $(NAME)
 
 clean:
-	/bin/rm -f $(SRCO)
+	@/bin/rm -f $(SRCO)
 
 fclean: clean 
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re: fclean all

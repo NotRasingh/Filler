@@ -6,7 +6,7 @@
 /*   By: rasingh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 10:26:55 by rasingh           #+#    #+#             */
-/*   Updated: 2018/08/17 11:12:21 by rasingh          ###   ########.fr       */
+/*   Updated: 2018/08/22 12:17:38 by rasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		ft_add_node(t_moves **head, int row, int col)
 	t_moves *tmp;
 	t_moves *node;
 
-	node = malloc(sizeof(t_moves));
+	node = (t_moves*)malloc(sizeof(t_moves));
 	node->row = row;
 	node->col = col;
 	node->rating = 2147483647;
@@ -32,7 +32,7 @@ void		ft_add_node(t_moves **head, int row, int col)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = node;
-		tmp->next = NULL;
+		tmp->next->next = NULL;
 	}
 }
 
@@ -114,9 +114,7 @@ t_moves		*ft_make_list(t_map map, t_map piece)
 		while (col <= map.x - piece.x)
 		{
 			if (ft_isvalid(map, piece, row, col) == 1)
-			{
 				ft_add_node(&head, row, col);
-			}
 			col++;
 		}
 		row++;
